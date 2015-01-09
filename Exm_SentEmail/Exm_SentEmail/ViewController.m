@@ -25,5 +25,45 @@
 }
 
 - (IBAction)sentMain:(id)sender {
+    
+    NSString *messageBody = @"Bodyyy ............ .. . . . .. .. . .";
+    NSArray *BCC = [NSArray arrayWithObjects:@"BCC array", nil];
+    NSString *title = @"My Title";
+    NSArray *mailRecipients = [[NSArray alloc] initWithObjects:@"feniksqip@yandex.ru", nil];
+
+    MFMailComposeViewController *mailCont = [[MFMailComposeViewController alloc] init];
+    mailCont.mailComposeDelegate = self;
+    
+    [mailCont setMessageBody:messageBody isHTML:NO];
+    [mailCont setTitle:title];
+    [mailCont setSubject:title];
+    [mailCont setToRecipients:mailRecipients];
+    [mailCont setBccRecipients:BCC];
+    
+    [self presentViewController:mailCont animated:YES completion:Nil];
+    
 }
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
+   
+    switch (result) {
+        case MFMailComposeResultSent:
+            NSLog(@"Message: SENT");
+            break;
+        case MFMailComposeResultSaved:
+            NSLog(@"Message: SAVED");
+            break;
+        case MFMailComposeResultCancelled:
+            NSLog(@"Message: CANCELLED");
+            break;
+        case MFMailComposeResultFailed:
+            NSLog(@"Message: FAILED, error %@", [error localizedDescription]);
+            break;
+        default:
+            break;
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:Nil];
+}
+
 @end
